@@ -12,50 +12,50 @@ public class PercolationStats {
 		
 //		this.N = N;
 		
-		if(N<=0 || T<=0){
+		if (N <= 0 || T <= 0) {
 			throw new IllegalArgumentException();
 		}
 		
 		this.T = T;
 		this.results = new double[T];
 		
-		for(int k=0; k<T; k++){
+		for (int k = 0; k < T; k++) {
 			int countOpen = 0;
 			Percolation sampleGrid = new Percolation(N);
 			
-			while(!sampleGrid.percolates()){
-				int i,j;
+			while (!sampleGrid.percolates()) {
+				int i, j;
 				
-				do{
+				do {
 					i = StdRandom.uniform(1, N+1);
 					j = StdRandom.uniform(1, N+1);
 				} while (sampleGrid.isOpen(i, j));
 				
 				sampleGrid.open(i, j);
-				countOpen ++;
+				countOpen++;
 			}
 			
 			results[k] = 1.0 * countOpen/(N*N);
 		}
 	}
 	
-	public double mean(){
+	public double mean() {
 		return StdStats.mean(results);
 		// sample mean of percolation threshold
 	}
 	
-	public double stddev(){		
+	public double stddev() {		
 		return StdStats.stddev(results);
 		// sample standard deviation of percolation threshold
 	}
 	
-	public double confidenceLo(){
+	public double confidenceLo() {
 		double confHi = mean() - 1.96*stddev()/Math.sqrt(T);		
 		return confHi;
 		// low  endpoint of 95% confidence interval
 	}
 	
-	public double confidenceHi(){
+	public double confidenceHi() {
 		double confHi = mean() + 1.96*stddev()/Math.sqrt(T);		
 		return confHi;
 		// high endpoint of 95% confidence interval
