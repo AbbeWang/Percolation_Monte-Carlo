@@ -7,7 +7,7 @@ public class PercolationStats {
 	private int T;	
 	private double[] results;
 	
-	public PercolationStats(int N, int T) throws IllegalArgumentException {
+	public PercolationStats(int N, int T) {
 		// perform T independent experiments on an N-by-N grid
 		
 //		this.N = N;
@@ -66,7 +66,7 @@ public class PercolationStats {
 		// TODO Auto-generated method stub
 		
 		PercolationStats test = new PercolationStats(Integer.parseInt(args[0]), Integer.parseInt(args[1]));
-//		PercolationStats test = new PercolationStats(10,5);
+//		PercolationStats test = new PercolationStats(200,100);
 		Stopwatch stopwatch = new Stopwatch();
 		
 		System.out.println("mean                    = " + test.mean());

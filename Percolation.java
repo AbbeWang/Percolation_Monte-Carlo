@@ -15,7 +15,7 @@ public class Percolation {
 		
 		this.grid = new int[N][N];
 		this.N = N;
-		this.percolate = new WeightedQuickUnionUF(N*N);
+		this.percolate = new WeightedQuickUnionUF(N*N+2);
 		
 		for (int i = 0; i < N; i++) {
 			for (int j = 0; j < N; j++) {
@@ -37,8 +37,16 @@ public class Percolation {
 		if (i > 1 && isOpen(i-1, j))
 			percolate.union((i-1)*N+j-1, (i-2)*N+j-1);
 		
+		if (i == 1) {
+			percolate.union(j-1, N*N);
+		}
+		
 		if (i < N && isOpen(i+1, j))
 			percolate.union((i-1)*N+j-1, (i)*N+j-1);
+		
+		if (i == N) {
+			percolate.union((i-1)*N+j-1, N*N+1);
+		}
 		
 		if (j > 1 && isOpen(i, j-1))
 			percolate.union((i-1)*N+j-1, (i-1)*N+j-2);
@@ -50,14 +58,14 @@ public class Percolation {
 	public boolean isOpen(int i, int j) {		
 		// is site (row i, column j) open?
 		
-		if (i < 1 || i > N || j < 1 || j > N){
+		if (i < 1 || i > N || j < 1 || j > N) {
 			throw new IndexOutOfBoundsException();
 		}
 		
-//		if (grid[i-1][j-1] == 0)
-		return grid[i-1][j-1] != 0;
-//		else
-//			return true;
+		if (grid[i-1][j-1] == 0)
+			return false;
+		else
+			return true;
 	}
 	
 	public boolean isFull(int i, int j) {
@@ -68,26 +76,32 @@ public class Percolation {
 		}
 		
 		if (isOpen(i, j)) {
-			if (i == 1)
-				return true;
-			else {
-				for (int k = 1; k <= N; k++) {
-					if (isOpen(1, k) && percolate.connected(k-1, (i-1)*N+j-1))
-						return true;
-				}
-			}
+//			if (i == 1)
+//				return true;
+//			else {
+//				
+//				if (percolate.connected(N*N, (i-1)*N+j-1))
+//					return true;
+//				else
+//					return false;
+//			}
+			
+			return percolate.connected(N*N, (i-1)*N+j-1);
 		}
-		return false;
+		else
+			return false;
 	}
 	
 	public boolean percolates() {
 		// does the system percolate?
 		
-		for (int k = 1; k <= N; k++) {
-			if (isFull(N, k))
-				return true;
-		}
-		return false;
+//		for (int k = 1; k <= N; k++) {
+//			if (isFull(N, k))
+//				return true;
+//		}
+//		if(percolate.connected(N*N, N*N+1))
+//			return true;
+		return percolate.connected(N*N, N*N+1);
 	}
 	
 	public static void main(String[] args) {
