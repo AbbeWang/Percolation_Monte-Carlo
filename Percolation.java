@@ -4,6 +4,7 @@ public class Percolation {
 	private int[][] grid;
 	private int N;
 	private WeightedQuickUnionUF percolate;
+	private WeightedQuickUnionUF full;
 
 	
 	public Percolation(int N) {
@@ -16,6 +17,7 @@ public class Percolation {
 		this.grid = new int[N][N];
 		this.N = N;
 		this.percolate = new WeightedQuickUnionUF(N*N+2);
+		this.full = new WeightedQuickUnionUF(N*N+1);
 		
 		for (int i = 0; i < N; i++) {
 			for (int j = 0; j < N; j++) {
@@ -34,25 +36,34 @@ public class Percolation {
 		
 		grid[i-1][j-1] = 1;  //for point(i,j)
 				
-		if (i > 1 && isOpen(i-1, j))
+		if (i > 1 && isOpen(i-1, j)) {
 			percolate.union((i-1)*N+j-1, (i-2)*N+j-1);
+			full.union((i-1)*N+j-1, (i-2)*N+j-1);
+		}
 		
 		if (i == 1) {
 			percolate.union(j-1, N*N);
+			full.union(j-1, N*N);
 		}
 		
-		if (i < N && isOpen(i+1, j))
+		if (i < N && isOpen(i+1, j)) {
 			percolate.union((i-1)*N+j-1, (i)*N+j-1);
+			full.union((i-1)*N+j-1, (i)*N+j-1);
+		}	
 		
 		if (i == N) {
 			percolate.union((i-1)*N+j-1, N*N+1);
 		}
 		
-		if (j > 1 && isOpen(i, j-1))
+		if (j > 1 && isOpen(i, j-1)) {
 			percolate.union((i-1)*N+j-1, (i-1)*N+j-2);
+			full.union((i-1)*N+j-1, (i-1)*N+j-2);
+		}
 		
-		if (j < N && isOpen(i, j+1))
+		if (j < N && isOpen(i, j+1)) {
 			percolate.union((i-1)*N+j-1, (i-1)*N+j);
+			full.union((i-1)*N+j-1, (i-1)*N+j);
+		}	
 	}
 	
 	public boolean isOpen(int i, int j) {		
@@ -76,17 +87,19 @@ public class Percolation {
 		}
 		
 		if (isOpen(i, j)) {
-//			if (i == 1)
-//				return true;
-//			else {
-//				
-//				if (percolate.connected(N*N, (i-1)*N+j-1))
+			if (i == 1)
+				return true;
+			else {
+				
+//				if (full.connected(N*N, (i-1)*N+j-1))
 //					return true;
 //				else
 //					return false;
-//			}
+				
+				return full.connected(N*N, (i-1)*N+j-1);
+
+			}
 			
-			return percolate.connected(N*N, (i-1)*N+j-1);
 		}
 		else
 			return false;
@@ -106,6 +119,36 @@ public class Percolation {
 	
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
+		
+//		Percolation sampleGrid = new Percolation(3);
+//		for(int i=0; i<11; i++){
+//			System.out.println(sampleGrid.percolate.find(i));
+//		}
+//		
+//		sampleGrid.open(1, 3);
+//		System.out.println(sampleGrid.isFull(1, 3));
+//		for(int i=0; i<11; i++){
+//			System.out.println(sampleGrid.percolate.find(i));
+//		}
+//		
+//		sampleGrid.open(2, 3);
+//		System.out.println(sampleGrid.isFull(2, 3));
+//		for(int i=0; i<11; i++){
+//			System.out.println(sampleGrid.percolate.find(i));
+//		}
+//		
+//		sampleGrid.open(3, 3);
+//		System.out.println(sampleGrid.isFull(3, 3));		
+//		for(int i=0; i<11; i++){
+//			System.out.println(sampleGrid.percolate.find(i));
+//		}
+//		
+//		
+//		sampleGrid.open(3, 1);
+//		System.out.println(sampleGrid.isFull(3, 1));
+//		for(int i=0; i<11; i++){
+//			System.out.println(sampleGrid.percolate.find(i));
+//		}
 
 	}
 
